@@ -27,6 +27,7 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
     private WordAdapter wordAdapter;
     private Button saveButton;
     private Button addWordButton;
+    private Button switchAllButton;
 
     private List<Word> wordsList = new ArrayList<>();
     private int wordGroupId = -1;
@@ -53,6 +54,7 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
         addWordButton = findViewById(R.id.add_word_button);
         Button addBulkButton = findViewById(R.id.add_bulk_button);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        switchAllButton = findViewById(R.id.switch_all_button);
 
         wordAdapter = new WordAdapter(wordsList, this);
         wordsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -90,6 +92,7 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
         saveButton.setOnClickListener(v -> saveGroup());
         addWordButton.setOnClickListener(v -> onAddWordClicked());
         addBulkButton.setOnClickListener(v -> onAddBulkClicked());
+        switchAllButton.setOnClickListener(v -> onSwitchAllClicked());
     }
 
     private void saveGroup() {
@@ -235,6 +238,38 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
         } else {
             // Otherwise, save the group and then go back
             saveGroup();
+        }
+    }
+
+    private void onSwitchAllClicked() {
+        if (wordGroupId == -1) {
+            // For a new group, just swap all the words in word list wordsList
+            for (Word word: wordsList) {
+                //swap word
+                String oldTranslation = word.translation;
+                word.translation = word.wordToLearn;
+                word.wordToLearn = oldTranslation;
+            }
+            wordAdapter.notifyDataSetChanged(); // Notify the adapter about the dataset change
+        } else {
+            executor.execute(() -> {
+                WordGroup wordGroup = wordGroupDao.getWordGroupById(wordGroupId);
+                if(wordGroup != null) {
+                    for (Word word: wordGroup.words) {
+                        //swap word
+                        String oldTranslation = word.translation;
+                        word.translation = word.wordToLearn;
+                        word.wordToLearn = oldTranslation;
+                    }
+                    //update
+                    wordGroupDao.update(wordGroup);
+                    wordsList.clear();
+                    wordsList.addAll(wordGroup.words);
+                    runOnUiThread(() -> {
+                        wordAdapter.setWords(wordGroup.words);
+                    });
+                }
+            });
         }
     }
 }
