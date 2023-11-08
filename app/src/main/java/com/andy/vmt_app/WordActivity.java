@@ -33,16 +33,15 @@ public class WordActivity extends AppCompatActivity {
         btnRight = findViewById(R.id.btnRight);
         btnWrong = findViewById(R.id.btnWrong);
 
-        // Assuming you are passing the list of words with an intent
+        // get words to practice
         words = (List<Word>) getIntent().getSerializableExtra("wordList");
+        //shuffle words
         Collections.shuffle(words);
-
         displayWord();
-
+        //show answer
         tvTranslation.setOnClickListener(v -> tvWordToLearn.setVisibility(View.VISIBLE));
-
+        // Right/Wrong buttons
         btnRight.setOnClickListener(v -> nextWord());
-
         btnWrong.setOnClickListener(v -> {
             wrongWords.add(words.get(currentIndex));
             nextWord();

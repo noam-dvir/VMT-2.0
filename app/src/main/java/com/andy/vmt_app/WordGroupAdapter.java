@@ -44,10 +44,8 @@ public class WordGroupAdapter extends RecyclerView.Adapter<WordGroupAdapter.View
         Log.d("AdapterDebug", "Binding data for position: " + position);
         WordGroup wordGroup = wordGroups.get(position);
         holder.nameTextView.setText(wordGroups.get(position).name);
+        holder.sizeTextView.setText("size: " + wordGroup.words.size());
 
-
-        // set click listener to navigate to WordActivity
-        // ...
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,12 +66,15 @@ public class WordGroupAdapter extends RecyclerView.Adapter<WordGroupAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView nameTextView;
+        TextView sizeTextView;
         Button editButton;
         ImageButton deleteGroupButton;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.tvGroupName);
+            sizeTextView = itemView.findViewById(R.id.group_size_text_view);
+
             //setup 'Edit Group' button
             editButton = itemView.findViewById(R.id.btnEditGroup);
             editButton.setOnClickListener(new View.OnClickListener() {

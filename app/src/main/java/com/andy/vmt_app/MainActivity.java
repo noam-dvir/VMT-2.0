@@ -1,5 +1,7 @@
 package com.andy.vmt_app;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,9 +54,16 @@ public class MainActivity extends AppCompatActivity {
         adapter = new WordGroupAdapter(wordGroups, this, new WordGroupAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(WordGroup wordGroup) {
-                Intent intent = new Intent(MainActivity.this, WordActivity.class);
-                intent.putExtra("wordList", (Serializable) wordGroup.words);
-                startActivity(intent);
+
+                //check if group is empty
+                if (wordGroup.words == null || wordGroup.words.size()==0) {
+                    showEmptyGroupDialog();
+                } else {
+                    //init activity
+                    Intent intent = new Intent(MainActivity.this, WordActivity.class);
+                    intent.putExtra("wordList", (Serializable) wordGroup.words);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -91,6 +101,12 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-
+    private void showEmptyGroupDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage("Empty group. Add words.")
+                .setPositiveButton("OK", (dialog, id) -> dialog.dismiss());
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 }
 

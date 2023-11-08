@@ -17,6 +17,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/group_size_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Size: 0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvGroupName"
+        android:textAppearance="?attr/textAppearanceListItemSmall" />
+
     <!-- Edit button -->
     <Button
         android:id="@+id/btnEditGroup"
