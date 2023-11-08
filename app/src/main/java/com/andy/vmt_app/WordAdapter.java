@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder> {
 
-    private List<Word> wordList;
+    public List<Word> wordList;
     private int currentWordGroupId;
     private OnWordClickListener onWordClickListener;
 

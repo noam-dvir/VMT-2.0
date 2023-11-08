@@ -29,7 +29,6 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
     private Button addWordButton;
     private Button switchAllButton;
 
-    private List<Word> wordsList = new ArrayList<>();
     private int wordGroupId = -1;
 
     private YourDatabaseClass database;
@@ -56,7 +55,7 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
         Toolbar toolbar = findViewById(R.id.toolbar);
         switchAllButton = findViewById(R.id.switch_all_button);
 
-        wordAdapter = new WordAdapter(wordsList, this);
+        wordAdapter = new WordAdapter(new ArrayList<>(), this);
         wordsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         wordsRecyclerView.setAdapter(wordAdapter);
 
@@ -78,8 +77,6 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
         if (wordGroupId != -1) {
             executor.execute(() -> {
                 WordGroup wordGroup = database.wordGroupDao().getWordGroupById(wordGroupId);
-                wordsList.clear();
-                wordsList.addAll(wordGroup.words);
                 wordAdapter.setWords(wordGroup.words);
                 wordAdapter.setCurrentWordGroupId(wordGroupId);
                 runOnUiThread(() -> {
@@ -102,7 +99,7 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
             return;
         }
 
-        WordGroup newWordGroup = new WordGroup(groupName, wordsList);
+        WordGroup newWordGroup = new WordGroup(groupName, wordAdapter.wordList);
         newWordGroup.id = wordGroupId == -1 ? newWordGroup.id : wordGroupId;
 
         // 2. Save the WordGroup to the database
@@ -134,7 +131,7 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
     public void onWordClick(int position) {
         // Handle the word click event here
         // You can get the clicked word object using the position parameter
-        Word clickedWord = wordsList.get(position);
+        Word clickedWord = wordAdapter.wordList.get(position);
 
         // For instance, to show a toast with the clicked word
         Toast.makeText(this, "Clicked word: " + clickedWord.translation, Toast.LENGTH_SHORT).show();
@@ -170,7 +167,7 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
 
                 if (wordGroupId == -1) {
                     // For a new group, just add the word to the wordsList
-                    wordsList.add(newWord);
+                    wordAdapter.wordList.add(newWord);
                     wordAdapter.notifyDataSetChanged(); // Notify the adapter about the dataset change
                     dialog.dismiss();
                 } else {
@@ -179,8 +176,6 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
                         if(wordGroup != null) {
                             wordGroup.words.add(newWord);
                             wordGroupDao.update(wordGroup);
-                            wordsList.clear();
-                            wordsList.addAll(wordGroup.words);
                             runOnUiThread(() -> {
                                 wordAdapter.setWords(wordGroup.words);
                             });
@@ -220,10 +215,10 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
             for (int i = 0; i < lines.length; i += 2) {
                 String wordToLearn = lines[i].trim();
                 String translation = lines[i + 1].trim();
-                wordsList.add(new Word(wordToLearn, translation));
+                wordAdapter.wordList.add(new Word(wordToLearn, translation));
             }
 
-            wordAdapter.setWords(wordsList);
+            wordAdapter.notifyDataSetChanged();
             dialog.dismiss();
         });
 
@@ -232,7 +227,7 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
 
     private void onBackButtonPressed() {
         String groupName = groupNameEditText.getText().toString().trim();
-        if (groupName.isEmpty() && wordsList.isEmpty()) {
+        if (groupName.isEmpty() && wordAdapter.wordList.isEmpty()) {
             // If both name and words list are empty, simply go back
             finish();
         } else {
@@ -244,7 +239,7 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
     private void onSwitchAllClicked() {
         if (wordGroupId == -1) {
             // For a new group, just swap all the words in word list wordsList
-            for (Word word: wordsList) {
+            for (Word word: wordAdapter.wordList) {
                 //swap word
                 String oldTranslation = word.translation;
                 word.translation = word.wordToLearn;
@@ -263,8 +258,6 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
                     }
                     //update
                     wordGroupDao.update(wordGroup);
-                    wordsList.clear();
-                    wordsList.addAll(wordGroup.words);
                     runOnUiThread(() -> {
                         wordAdapter.setWords(wordGroup.words);
                     });
