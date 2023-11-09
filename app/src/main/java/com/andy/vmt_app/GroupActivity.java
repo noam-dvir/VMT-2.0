@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -27,7 +28,7 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
     private WordAdapter wordAdapter;
     private Button saveButton;
     private Button addWordButton;
-    private Button switchAllButton;
+    private ImageButton switchAllButton;
 
     private int wordGroupId = -1;
 
