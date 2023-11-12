@@ -18,6 +18,7 @@ public class WordActivity extends AppCompatActivity {
     private TextView tvTranslation;
     private Button btnRight;
     private Button btnWrong;
+    private Button backToMenuButton;
 
     private List<Word> words;
     private int currentIndex = 0;
@@ -32,6 +33,9 @@ public class WordActivity extends AppCompatActivity {
         tvTranslation = findViewById(R.id.tvTranslation);
         btnRight = findViewById(R.id.btnRight);
         btnWrong = findViewById(R.id.btnWrong);
+        backToMenuButton = findViewById(R.id.backToMenuButton);
+        // "Back to menu" button returns to Main Activity
+        backToMenuButton.setOnClickListener(v -> finish());
 
         // get words to practice
         words = (List<Word>) getIntent().getSerializableExtra("wordList");
