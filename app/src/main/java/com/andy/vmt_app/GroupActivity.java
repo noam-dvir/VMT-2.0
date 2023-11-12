@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWordClickListener {
     private EditText groupNameEditText;
@@ -30,7 +29,7 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
     private Button addWordButton;
     private ImageButton switchAllButton;
 
-    private int wordGroupId = -1;
+    //private int wordGroupId = -1;
 
     private YourDatabaseClass database;
     public WordGroupDao wordGroupDao;
@@ -74,12 +73,12 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
         });
 
         // Load existing data if this is an edit operation
-        wordGroupId = getIntent().getIntExtra("WORD_GROUP_ID", -1);
-        if (wordGroupId != -1) {
+        wordAdapter.wordGroupId = getIntent().getIntExtra("WORD_GROUP_ID", -1);
+        if (wordAdapter.wordGroupId != -1) {
             executor.execute(() -> {
-                WordGroup wordGroup = database.wordGroupDao().getWordGroupById(wordGroupId);
+                WordGroup wordGroup = database.wordGroupDao().getWordGroupById(wordAdapter.wordGroupId);
                 wordAdapter.setWords(wordGroup.words);
-                wordAdapter.setCurrentWordGroupId(wordGroupId);
+                wordAdapter.setWordGroupId(wordAdapter.wordGroupId);
                 runOnUiThread(() -> {
                     groupNameEditText.setText(wordGroup.name);
                 });
@@ -101,7 +100,7 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
         }
 
         WordGroup newWordGroup = new WordGroup(groupName, wordAdapter.wordList);
-        newWordGroup.id = wordGroupId == -1 ? newWordGroup.id : wordGroupId;
+        newWordGroup.id = wordAdapter.wordGroupId == -1 ? newWordGroup.id : wordAdapter.wordGroupId;
 
         // 2. Save the WordGroup to the database
         new Thread(new Runnable() {
@@ -166,14 +165,14 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
             if (!wordToLearn.isEmpty() && !translation.isEmpty()) {
                 Word newWord = new Word(wordToLearn, translation);
 
-                if (wordGroupId == -1) {
+                if (wordAdapter.wordGroupId == -1) {
                     // For a new group, just add the word to the wordsList
                     wordAdapter.wordList.add(newWord);
                     wordAdapter.notifyDataSetChanged(); // Notify the adapter about the dataset change
                     dialog.dismiss();
                 } else {
                     executor.execute(() -> {
-                        WordGroup wordGroup = wordGroupDao.getWordGroupById(wordGroupId);
+                        WordGroup wordGroup = wordGroupDao.getWordGroupById(wordAdapter.wordGroupId);
                         if(wordGroup != null) {
                             wordGroup.words.add(newWord);
                             wordGroupDao.update(wordGroup);
@@ -238,7 +237,7 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
     }
 
     private void onSwitchAllClicked() {
-        if (wordGroupId == -1) {
+        if (wordAdapter.wordGroupId == -1) {
             // For a new group, just swap all the words in word list wordsList
             for (Word word: wordAdapter.wordList) {
                 //swap word
@@ -249,7 +248,7 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
             wordAdapter.notifyDataSetChanged(); // Notify the adapter about the dataset change
         } else {
             executor.execute(() -> {
-                WordGroup wordGroup = wordGroupDao.getWordGroupById(wordGroupId);
+                WordGroup wordGroup = wordGroupDao.getWordGroupById(wordAdapter.wordGroupId);
                 if(wordGroup != null) {
                     for (Word word: wordGroup.words) {
                         //swap word

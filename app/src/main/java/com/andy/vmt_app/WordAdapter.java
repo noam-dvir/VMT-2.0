@@ -22,7 +22,7 @@ import java.util.concurrent.Executors;
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder> {
 
     public List<Word> wordList;
-    private int currentWordGroupId;
+    public int wordGroupId = -1;
     private OnWordClickListener onWordClickListener;
 
     public WordAdapter(List<Word> wordList, OnWordClickListener onWordClickListener) {
@@ -56,8 +56,8 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
     
     
 
-    public void setCurrentWordGroupId(int wordGroupId) {
-        this.currentWordGroupId = wordGroupId;
+    public void setWordGroupId(int wordGroupId) {
+        this.wordGroupId = wordGroupId;
     }
 
 
@@ -137,7 +137,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
                                 Executor executor = Executors.newSingleThreadExecutor();
                                 executor.execute(() -> {
                                     //update the group
-                                    WordGroup wordGroup = YourDatabaseClass.getInstance(itemView.getContext()).wordGroupDao().getWordGroupById(currentWordGroupId);
+                                    WordGroup wordGroup = YourDatabaseClass.getInstance(itemView.getContext()).wordGroupDao().getWordGroupById(wordGroupId);
                                     wordGroup.words.get(position).wordToLearn = updatedWord;
                                     wordGroup.words.get(position).translation = updatedTranslation;
                                     YourDatabaseClass.getInstance(itemView.getContext()).wordGroupDao().update(wordGroup);
@@ -175,20 +175,20 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
                         Executor executor = Executors.newSingleThreadExecutor();
                         executor.execute(() -> {
                             //get existing values
-                            WordGroup wordGroup = YourDatabaseClass.getInstance(itemView.getContext()).wordGroupDao().getWordGroupById(currentWordGroupId);
-                            String oldWordToLearn = new String(wordGroup.words.get(position).wordToLearn);
-                            String oldTranslation = new String(wordGroup.words.get(position).translation);
+                            String oldWordToLearn = new String(wordList.get(position).wordToLearn);
+                            String oldTranslation = new String(wordList.get(position).translation);
+                            //update the adapter's wordList
+                            wordList.get(position).wordToLearn = oldTranslation;
+                            wordList.get(position).translation = oldWordToLearn;
+                            new Handler(Looper.getMainLooper()).post(() -> notifyDataSetChanged());
+
                             //update word on database
-                            wordGroup.words.get(position).wordToLearn = oldTranslation;
-                            wordGroup.words.get(position).translation = oldWordToLearn;
-                            YourDatabaseClass.getInstance(itemView.getContext()).wordGroupDao().update(wordGroup);
-                            //update wordList
-                            new Handler(Looper.getMainLooper()).post(() -> {
-                                //update the adapter's wordList
-                                wordList.get(position).wordToLearn = oldTranslation;
-                                wordList.get(position).translation = oldWordToLearn;
-                                notifyDataSetChanged();
-                            });
+                            WordGroup wordGroup = YourDatabaseClass.getInstance(itemView.getContext()).wordGroupDao().getWordGroupById(wordGroupId);
+                            if (wordGroup != null) {
+                                wordGroup.words.get(position).wordToLearn = oldTranslation;
+                                wordGroup.words.get(position).translation = oldWordToLearn;
+                                YourDatabaseClass.getInstance(itemView.getContext()).wordGroupDao().update(wordGroup);
+                            }
                         });
                     }
                 }
@@ -201,7 +201,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
                 @Override
                 public void run() {
                     // Fetch the word group
-                    WordGroup wordGroup = YourDatabaseClass.getInstance(itemView.getContext()).wordGroupDao().getWordGroupById(currentWordGroupId); // Assuming you have wordGroupId available
+                    WordGroup wordGroup = YourDatabaseClass.getInstance(itemView.getContext()).wordGroupDao().getWordGroupById(wordGroupId); // Assuming you have wordGroupId available
 
                     // Remove the word from the group
                     wordGroup.words.remove(indexToRemove);
