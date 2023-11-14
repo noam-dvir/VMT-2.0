@@ -7,8 +7,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add words and their translation, line by line.\nFor example, the following input:\nuno\none\ndos\ntwo\ntres\nthree\nwill add the following words to the group:\n(um : one)\n(dos : two)\n(tres : three)"
-        android:textSize="16sp" />
+        android:text="Add words and their translation, line by line.\nFor example:\num\none\ndois\ntwo"
+        android:textSize="20sp" />
 
     <EditText
         android:id="@+id/bulkWordsEditText"
