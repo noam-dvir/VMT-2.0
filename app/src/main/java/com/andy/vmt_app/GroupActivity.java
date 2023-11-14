@@ -109,15 +109,6 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
                 // Use your database DAO here to insert the WordGroup
                 long insertWorked = wordGroupDao.insert(newWordGroup);
 
-                //check if saved
-                if ( insertWorked == -1 ) {
-                    Log.d("GroupActivity", "Failed to insert group");
-                }
-                List<WordGroup> allGroups = wordGroupDao.getAllWordGroupsStatic();
-                for (WordGroup group : allGroups) {
-                    Log.d("GroupActivity", "Saved Group: " + group.name);
-                }
-
                 // Once saved, go back to the previous activity
                 finish();  // This will close the current GroupActivity and go back to MainActivity
             }

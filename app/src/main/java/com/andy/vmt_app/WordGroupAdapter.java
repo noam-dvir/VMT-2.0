@@ -41,7 +41,6 @@ public class WordGroupAdapter extends RecyclerView.Adapter<WordGroupAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull WordGroupAdapter.ViewHolder holder, int position) {
-        Log.d("AdapterDebug", "Binding data for position: " + position);
         WordGroup wordGroup = wordGroups.get(position);
         holder.nameTextView.setText(wordGroups.get(position).name);
         holder.sizeTextView.setText("size: " + wordGroup.words.size());
@@ -60,7 +59,6 @@ public class WordGroupAdapter extends RecyclerView.Adapter<WordGroupAdapter.View
 
     @Override
     public int getItemCount() {
-        Log.d("AdapterDebug", "Item count: " + wordGroups.size());
         return wordGroups.size();
     }
 

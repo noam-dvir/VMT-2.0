@@ -88,11 +88,6 @@ public class MainActivity extends AppCompatActivity {
         new Thread(() -> {
             List<WordGroup> wordGroupsFromDb = wordGroupDao.getAllWordGroupsStatic();
 
-            Log.d("MainActivity", "Inside onResume()");
-            for (WordGroup group : wordGroupsFromDb) {
-                Log.d("GroupActivity", "Saved Group: " + group.name);
-            }
-
             runOnUiThread(() -> {
                 wordGroups.clear();
                 wordGroups.addAll(wordGroupsFromDb);
