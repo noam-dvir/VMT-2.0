@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">vmt-app</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Choose group to practice</string>
     <string name="fab_add_content_description">Add new word group</string>
-    <string name="title_activity_group">GroupActivity</string>
+    <string name="title_activity_group">Add/remove words</string>
 </resources>
