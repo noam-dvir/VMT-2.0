@@ -24,6 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Group Name"
+        android:textSize="30sp"
         android:inputType="text" />
 
     <!-- RecyclerView for displaying the list of words -->
