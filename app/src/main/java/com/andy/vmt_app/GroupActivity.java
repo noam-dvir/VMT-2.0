@@ -123,7 +123,6 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
             }
         }).start();
 
-        Toast.makeText(this, "Group saved", Toast.LENGTH_SHORT).show();
         finish();
     }
 
