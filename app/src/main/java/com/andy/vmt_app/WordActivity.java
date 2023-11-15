@@ -29,6 +29,11 @@ public class WordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word);
 
+        // Hide the action bar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
         tvWordToLearn = findViewById(R.id.tvWordToLearn);
         tvTranslation = findViewById(R.id.tvTranslation);
         btnRight = findViewById(R.id.btnRight);
@@ -63,7 +68,6 @@ public class WordActivity extends AppCompatActivity {
             handleIterationEnd();
         }
     }
-
 
     private void handleIterationEnd() {
         if (!wrongWords.isEmpty()) {
