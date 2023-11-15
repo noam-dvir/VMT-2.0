@@ -1,6 +1,5 @@
 package com.andy.vmt_app;
 
-// WordGroup.java
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -22,8 +21,5 @@ public class WordGroup {
     }
 
     public WordGroup() {
-
     }
-
-    // Constructors, getters and setters
 }

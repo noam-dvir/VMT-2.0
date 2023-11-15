@@ -53,8 +53,6 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
         this.wordList = words;
         notifyDataSetChanged();
     }
-    
-    
 
     public void setWordGroupId(int wordGroupId) {
         this.wordGroupId = wordGroupId;
@@ -215,17 +213,6 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
                         notifyDataSetChanged();
                     });
 
-                }
-            });
-        }
-
-
-        private void updateWordGroupInDatabase(final WordGroup wordGroup) {
-            Executor executor = Executors.newSingleThreadExecutor();
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    YourDatabaseClass.getInstance(itemView.getContext()).wordGroupDao().update(wordGroup);
                 }
             });
         }

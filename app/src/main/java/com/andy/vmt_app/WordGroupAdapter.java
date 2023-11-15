@@ -136,9 +136,6 @@ public class WordGroupAdapter extends RecyclerView.Adapter<WordGroupAdapter.View
                 });
             });
         }
-
-
-
     }
 
     public interface OnItemClickListener {

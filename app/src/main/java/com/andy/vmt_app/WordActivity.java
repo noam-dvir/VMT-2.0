@@ -81,8 +81,8 @@ public class WordActivity extends AppCompatActivity {
                     .show();
         } else {
             new AlertDialog.Builder(this)
-                    .setTitle("Great Job!")
-                    .setMessage("Finished! Well done!")
+                    .setTitle("Finished!")
+                    .setMessage("Well done!")
                     .setPositiveButton("Back to menu", (dialog, which) -> finish())
                     .setCancelable(false)
                     .show();

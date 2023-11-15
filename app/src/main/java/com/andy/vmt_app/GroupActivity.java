@@ -28,9 +28,6 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
     private Button saveButton;
     private Button addWordButton;
     private ImageButton switchAllButton;
-
-    //private int wordGroupId = -1;
-
     private YourDatabaseClass database;
     public WordGroupDao wordGroupDao;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -108,7 +105,6 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
             public void run() {
                 // Use your database DAO here to insert the WordGroup
                 long insertWorked = wordGroupDao.insert(newWordGroup);
-
                 // Once saved, go back to the previous activity
                 finish();  // This will close the current GroupActivity and go back to MainActivity
             }
@@ -161,6 +157,7 @@ public class GroupActivity extends AppCompatActivity implements WordAdapter.OnWo
                     wordAdapter.notifyDataSetChanged(); // Notify the adapter about the dataset change
                     dialog.dismiss();
                 } else {
+                    // existing group -> get from database
                     executor.execute(() -> {
                         WordGroup wordGroup = wordGroupDao.getWordGroupById(wordAdapter.wordGroupId);
                         if(wordGroup != null) {

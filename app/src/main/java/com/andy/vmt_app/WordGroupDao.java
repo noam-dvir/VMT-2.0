@@ -21,7 +21,6 @@ public interface WordGroupDao {
     @Query("SELECT * FROM word_group_table WHERE id = :groupId")
     WordGroup getWordGroupById(int groupId);
 
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(WordGroup wordGroup);
 

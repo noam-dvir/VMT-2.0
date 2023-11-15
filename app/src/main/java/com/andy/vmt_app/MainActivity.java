@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         recyclerView = findViewById(R.id.recycler_view);
-        //adapter = new WordGroupAdapter(wordGroups, this);
         adapter = new WordGroupAdapter(wordGroups, this, new WordGroupAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(WordGroup wordGroup) {
@@ -69,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
         FloatingActionButton fabAdd = findViewById(R.id.fab_add);
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
