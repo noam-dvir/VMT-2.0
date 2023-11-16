@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Back to Menu Button -->
     <Button
         android:id="@+id/backToMenuButton"
         android:layout_width="wrap_content"
@@ -15,33 +15,49 @@
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp" />
 
-    <!-- Translation TextView -->
-    <TextView
-        android:id="@+id/tvTranslation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Translation"
-        android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <!-- ScrollView for Translation and Word to Learn TextViews -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/backToMenuButton"
+        app:layout_constraintBottom_toTopOf="@id/btnRight"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="60sp"
-        android:clickable="true" />
+        android:paddingTop="26dp"
+        android:paddingBottom="16dp">
 
-    <!-- Word to Learn TextView -->
-    <TextView
-        android:id="@+id/tvWordToLearn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Word to Learn"
-        android:gravity="center"
-        android:textSize="60sp"
-        app:layout_constraintTop_toBottomOf="@id/tvTranslation"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="gone" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingTop="200dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
 
+            <!-- Translation TextView -->
+            <TextView
+                android:id="@+id/tvTranslation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Translation"
+                android:textSize="60sp"
+                android:gravity="center"
+                android:clickable="true" />
+
+            <!-- Word to Learn TextView -->
+            <TextView
+                android:id="@+id/tvWordToLearn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Word to Learn"
+                android:textSize="60sp"
+                android:gravity="center"
+                android:visibility="gone" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Right Button -->
     <Button
         android:id="@+id/btnRight"
         android:layout_width="0dp"
@@ -55,6 +71,7 @@
         app:layout_constraintEnd_toStartOf="@id/btnWrong"
         app:layout_constraintBottom_toBottomOf="parent" />
 
+    <!-- Wrong Button -->
     <Button
         android:id="@+id/btnWrong"
         android:layout_width="0dp"
